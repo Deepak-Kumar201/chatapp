@@ -19,12 +19,12 @@ export function SocketProvider({ children }) {
         // userSocket is used for auth and login 
         // chatSocket is used for chat events
         let userSocket, chatSocket;
-        userSocket = io('http://localhost:5000/user');
+        userSocket = io('/user');
         userSocket.on("connect", () => {
             if (!isEmpty(token)) {
                 userSocket.emit("auth", token);
                 userSocket.on("auth-success", (user) => {
-                    chatSocket = io("http://localhost:5000/chat", { query: { token } });
+                    chatSocket = io("/chat", { query: { token } });
                     chatSocket.on("connect", () => {
                         if (isEmpty(user)) return;
                         chatSocket.emit("join-room", user._id);
